@@ -1,3 +1,9 @@
+import {
+  singleDouble,
+  singleTriple,
+  wholeDouble,
+  wholeTriple,
+} from "./modifiers";
 import { Modifier, SquareType } from "./types";
 
 export const gameBoardInitialize = (size: number): SquareType[] => {
@@ -6,6 +12,57 @@ export const gameBoardInitialize = (size: number): SquareType[] => {
   const result: SquareType[] = [];
   column.map((column, columnIndex) => {
     return row.map((row, rowIndex) => {
+      if (
+        wholeTriple.some(
+          (value) => value.x === columnIndex && value.y === rowIndex
+        )
+      ) {
+        return result.push({
+          position: { x: columnIndex, y: rowIndex },
+          status: "empty",
+          value: undefined,
+          modifier: "3X",
+        });
+      }
+
+      if (
+        singleTriple.some(
+          (value) => value.x === columnIndex && value.y === rowIndex
+        )
+      ) {
+        return result.push({
+          position: { x: columnIndex, y: rowIndex },
+          status: "empty",
+          value: undefined,
+          modifier: "3x",
+        });
+      }
+
+      if (
+        wholeDouble.some(
+          (value) => value.x === columnIndex && value.y === rowIndex
+        )
+      ) {
+        return result.push({
+          position: { x: columnIndex, y: rowIndex },
+          status: "empty",
+          value: undefined,
+          modifier: "2X",
+        });
+      }
+
+      if (
+        singleDouble.some(
+          (value) => value.x === columnIndex && value.y === rowIndex
+        )
+      ) {
+        return result.push({
+          position: { x: columnIndex, y: rowIndex },
+          status: "empty",
+          value: undefined,
+          modifier: "2x",
+        });
+      }
       return result.push({
         position: { x: columnIndex, y: rowIndex },
         status: "empty",
@@ -30,7 +87,7 @@ export const getRandomNumbers = (size: number): number[] => {
   return numbers;
 };
 
-export const getVariatn = (variant: Modifier): string => {
+export const getVariant = (variant: Modifier): string => {
   switch (variant) {
     case "3X":
       return "#4aa4db";
@@ -40,7 +97,7 @@ export const getVariatn = (variant: Modifier): string => {
       return "#b0e9f0";
     case "2x":
       return "#abe898";
+    default:
+      return "#fff";
   }
-
-  return;
 };

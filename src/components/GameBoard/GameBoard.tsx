@@ -4,6 +4,11 @@ import { useGameContext } from "../../context/context";
 import { ActionType, Position, Status } from "../../types";
 import Square from "../Square";
 
+const Border = styled.div`
+  border: 5px solid #ffc820;
+  border-radius: 5px;
+`;
+
 const Container = styled.div`
   height: 630px;
   width: 630px;
@@ -19,7 +24,6 @@ const GameBoard: FC<GameBoardProps> = () => {
   const { state, dispatch } = useGameContext();
   console.log("field", state.field);
   const { stones } = state;
-  console.log("stones", stones);
 
   const handleClick = useCallback(
     (
@@ -28,9 +32,6 @@ const GameBoard: FC<GameBoardProps> = () => {
       stoneStackIndex?: number,
       value?: number
     ) => {
-      console.log("click");
-      console.log("stones.activeStone", stones.activeStone === undefined);
-      console.log("pending", status === "pending");
       if (stones.activeStone !== undefined) {
         dispatch({
           type: ActionType.addNumber,
@@ -60,7 +61,7 @@ const GameBoard: FC<GameBoardProps> = () => {
         });
       }
     },
-    [dispatch, stones.activeStone]
+    [dispatch, stones.activeStone, stones.activeStoneIndex]
   );
 
   if (!state.field) {
@@ -68,24 +69,27 @@ const GameBoard: FC<GameBoardProps> = () => {
   }
 
   return (
-    <Container>
-      {state.field.map(
-        ({ value, position, status, stoneStackIndex }, index) => {
-          return (
-            <Square
-              key={index}
-              value={value}
-              position={position}
-              onClick={handleClick}
-              status={status}
-              stoneStackIndex={stoneStackIndex}
-            >
-              {value}
-            </Square>
-          );
-        }
-      )}
-    </Container>
+    <Border>
+      <Container>
+        {state.field.map(
+          ({ value, position, status, stoneStackIndex, modifier }, index) => {
+            return (
+              <Square
+                key={index}
+                value={value}
+                position={position}
+                onClick={handleClick}
+                status={status}
+                stoneStackIndex={stoneStackIndex}
+                modifier={modifier}
+              >
+                {value}
+              </Square>
+            );
+          }
+        )}
+      </Container>
+    </Border>
   );
 };
 

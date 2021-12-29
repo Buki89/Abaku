@@ -1,18 +1,19 @@
 import { FC, memo, useCallback } from "react";
 import styled from "styled-components";
-import useTraceUpdate from "../../hooks/useTraceUpdate";
-import { Position, Status } from "../../types";
+import { Modifier, Position, Status } from "../../types";
+import { getVariant } from "../../utils";
 
 type ContainerProps = {
   hasValue: boolean;
+  modifier: Modifier;
 };
 
 const Container = styled.div<ContainerProps>`
   height: 40px;
   width: 40px;
   border: 1px solid #672117;
-  background-color: ${({ hasValue: $hasValue }) =>
-    $hasValue ? "#fbcf9f" : "#fff"};
+  background-color: ${({ hasValue, modifier }) =>
+    hasValue ? "#fbcf9f" : getVariant(modifier)};
   color: ${({ hasValue: $hasValue }) => ($hasValue ? "#672117" : "#fff")};
   display: flex;
   justify-content: center;
@@ -38,10 +39,19 @@ type SquareProps = {
   position: Position;
   status: Status;
   stoneStackIndex?: number;
+  modifier: Modifier;
 };
 
 const Square: FC<SquareProps> = memo((props) => {
-  const { children, value, position, status, stoneStackIndex, onClick } = props;
+  const {
+    children,
+    value,
+    position,
+    status,
+    stoneStackIndex,
+    modifier,
+    onClick,
+  } = props;
 
   const hasValue = value !== undefined;
 
@@ -50,11 +60,11 @@ const Square: FC<SquareProps> = memo((props) => {
   const handleClick = useCallback(
     () =>
       status !== "done" && onClick(position, status, stoneStackIndex, value),
-    [onClick, position, hasValue, status, value, stoneStackIndex]
+    [onClick, position, status, value, stoneStackIndex]
   );
 
   return (
-    <Container hasValue={hasValue} onClick={handleClick}>
+    <Container hasValue={hasValue} modifier={modifier} onClick={handleClick}>
       {children}
     </Container>
   );

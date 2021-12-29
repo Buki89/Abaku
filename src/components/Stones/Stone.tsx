@@ -11,19 +11,20 @@ const Container = styled.div<{ $active: boolean; $hasValue: boolean }>`
   margin: 2px;
   color: #672117;
   font-size: 5rem;
+  font-weight: 500;
   display: flex;
   justify-content: center;
   align-items: center;
   :hover {
-    background-color: ${({ $active }) => ($active ? "#e67300" : "#fbcf9f80")};
+    background-color: ${({ $active }) => ($active ? "#e67300" : "#e6730050")};
   }
   ${({ $hasValue }) =>
     !$hasValue &&
     `
-      background-color: #fff;
-      border: 1px solid #fff;
+      background-color: #fbcf9f;
+      border: 1px solid #fbcf9f;
       :hover {
-        background-color: #fff;
+        background-color: #fbcf9f;
       }
       `}
 `;
