@@ -5,6 +5,7 @@ export const changeActiveStone = (
   payload: { value: number; index: number }
 ): State => {
   return {
+    game: state.game,
     field: state.field,
     stones: {
       ...state.stones,
@@ -16,7 +17,7 @@ export const changeActiveStone = (
 
 type AddNumber = (
   state: State,
-  payload: Pick<SquareType, "position" | "value" | "stoneStackIndex">
+  payload: Pick<SquareType, "position" | "status">
 ) => State;
 
 export const addNumber: AddNumber = (state, payload) => {
@@ -26,19 +27,18 @@ export const addNumber: AddNumber = (state, payload) => {
       square.position.y === payload.position.y
     ) {
       return {
-        // position: {
-        //   x: payload.position.x,
-        //   y: payload.position.y,
-        // },
-        // value: payload.value,
+        ...square,
         ...payload,
-        status: "pending",
+        stoneStackIndex: state.stones.activeStoneIndex,
+        value: state.stones.activeStone,
+        status: payload.status ? payload.status : "pending",
       };
     }
     return square;
   });
 
   return {
+    game: state.game,
     field: field,
     stones: state.stones,
   };
@@ -62,12 +62,14 @@ export const removeNumber: RemoveNumber = (state, payload) => {
         },
         value: undefined,
         status: "empty",
+        modifier: square.modifier,
       };
     }
     return square;
   });
 
   return {
+    game: state.game,
     field,
     stones: state.stones,
   };
@@ -78,8 +80,6 @@ export const addStone = (
   payload: { index: number; value: number }
 ): State => {
   const newValues = state.stones.values.map((value: number, index: number) => {
-    console.log("index", payload.index);
-    console.log("value", payload.value);
     if (index === payload.index) {
       return payload.value;
     }
@@ -87,6 +87,7 @@ export const addStone = (
   });
 
   return {
+    game: state.game,
     field: state.field,
     stones: {
       ...state.stones,
@@ -94,18 +95,16 @@ export const addStone = (
     },
   };
 };
-export const removeStone = (
-  state: State,
-  payload: { index: number }
-): State => {
+export const removeStone = (state: State, payload: {}): State => {
   const newValues = state.stones.values.map((value: number, index: number) => {
-    if (index === payload.index) {
+    if (index === state.stones.activeStoneIndex) {
       return undefined;
     }
     return value;
   });
 
   return {
+    game: state.game,
     field: state.field,
     stones: {
       ...state.stones,

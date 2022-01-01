@@ -19,7 +19,31 @@ const ContextProvider: FC = ({ children }) => {
   const [state, dispatch] = useReducer(
     reducer,
     {
-      field: gameBoardInitialize(15),
+      field: gameBoardInitialize(15).map((field) => {
+        if (field.position.x === 7 && field.position.y === 7) {
+          return {
+            position: { x: 7, y: 7 },
+            status: "done",
+            value: 2,
+          };
+        }
+        if (field.position.x === 7 && field.position.y === 8) {
+          return {
+            position: { x: 7, y: 8 },
+            status: "done",
+            value: 2,
+          };
+        }
+        if (field.position.x === 7 && field.position.y === 9) {
+          return {
+            position: { x: 7, y: 9 },
+            status: "done",
+            value: 4,
+          };
+        }
+
+        return field;
+      }),
       stones: {
         values: getRandomNumbers(5),
         activeStone: undefined,

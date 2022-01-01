@@ -22,8 +22,8 @@ type GameBoardProps = {};
 
 const GameBoard: FC<GameBoardProps> = () => {
   const { state, dispatch } = useGameContext();
-  console.log("field", state.field);
   const { stones } = state;
+  console.log("field", state.field);
 
   const handleClick = useCallback(
     (
@@ -32,18 +32,23 @@ const GameBoard: FC<GameBoardProps> = () => {
       stoneStackIndex?: number,
       value?: number
     ) => {
-      if (stones.activeStone !== undefined) {
+      if (status === "pending") {
+        dispatch({ type: ActionType.removeNumber, payload: { position } });
+        dispatch({
+          type: ActionType.addStone,
+          payload: { index: stoneStackIndex, value },
+        });
+      }
+      if (stones.activeStone) {
         dispatch({
           type: ActionType.addNumber,
           payload: {
             position,
-            value: stones.activeStone,
-            stoneStackIndex: stones.activeStoneIndex,
           },
         });
         dispatch({
           type: ActionType.removeStone,
-          payload: { index: stones.activeStoneIndex },
+          payload: {},
         });
         dispatch({
           type: ActionType.changeActiveStone,
@@ -53,15 +58,8 @@ const GameBoard: FC<GameBoardProps> = () => {
           },
         });
       }
-      if (stones.activeStone === undefined && status === "pending") {
-        dispatch({ type: ActionType.removeNumber, payload: { position } });
-        dispatch({
-          type: ActionType.addStone,
-          payload: { index: stoneStackIndex, value },
-        });
-      }
     },
-    [dispatch, stones.activeStone, stones.activeStoneIndex]
+    [dispatch, stones.activeStone]
   );
 
   if (!state.field) {

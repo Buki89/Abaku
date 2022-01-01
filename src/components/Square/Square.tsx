@@ -6,6 +6,7 @@ import { getVariant } from "../../utils";
 type ContainerProps = {
   hasValue: boolean;
   modifier: Modifier;
+  status: Status;
 };
 
 const Container = styled.div<ContainerProps>`
@@ -26,6 +27,8 @@ const Container = styled.div<ContainerProps>`
     `:hover {
     background-color: #d1d1e0;
   }`}
+
+  ${({ status }) => status === "pending" && `background-color: #f69023;`}
 `;
 
 type SquareProps = {
@@ -55,8 +58,6 @@ const Square: FC<SquareProps> = memo((props) => {
 
   const hasValue = value !== undefined;
 
-  // useTraceUpdate(props);
-
   const handleClick = useCallback(
     () =>
       status !== "done" && onClick(position, status, stoneStackIndex, value),
@@ -64,7 +65,12 @@ const Square: FC<SquareProps> = memo((props) => {
   );
 
   return (
-    <Container hasValue={hasValue} modifier={modifier} onClick={handleClick}>
+    <Container
+      hasValue={hasValue}
+      modifier={modifier}
+      status={status}
+      onClick={handleClick}
+    >
       {children}
     </Container>
   );

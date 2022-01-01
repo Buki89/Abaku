@@ -20,7 +20,6 @@ export const gameBoardInitialize = (size: number): SquareType[] => {
         return result.push({
           position: { x: columnIndex, y: rowIndex },
           status: "empty",
-          value: undefined,
           modifier: "3X",
         });
       }
@@ -33,7 +32,6 @@ export const gameBoardInitialize = (size: number): SquareType[] => {
         return result.push({
           position: { x: columnIndex, y: rowIndex },
           status: "empty",
-          value: undefined,
           modifier: "3x",
         });
       }
@@ -46,7 +44,6 @@ export const gameBoardInitialize = (size: number): SquareType[] => {
         return result.push({
           position: { x: columnIndex, y: rowIndex },
           status: "empty",
-          value: undefined,
           modifier: "2X",
         });
       }
@@ -59,14 +56,12 @@ export const gameBoardInitialize = (size: number): SquareType[] => {
         return result.push({
           position: { x: columnIndex, y: rowIndex },
           status: "empty",
-          value: undefined,
           modifier: "2x",
         });
       }
       return result.push({
         position: { x: columnIndex, y: rowIndex },
         status: "empty",
-        value: undefined,
       });
     });
   });
@@ -99,5 +94,67 @@ export const getVariant = (variant: Modifier): string => {
       return "#abe898";
     default:
       return "#fff";
+  }
+};
+
+export const checkInitialMove = (fields: SquareType[]): boolean => {
+  return fields.filter((field) => field.value !== undefined).length > 1;
+};
+
+export const checkCenter = (fields: SquareType[]): boolean => {
+  const match = fields.filter((field) => field.value !== undefined);
+  return match.some(
+    (value) => value.position.x === 7 && value.position.y === 7
+  );
+};
+
+const allEqual = (arr: number[]) => arr.every((v) => v === arr[0]);
+
+export const checkDirection = (fields: SquareType[]): number => {
+  const xAxis: number[] = [];
+  const yAxis: number[] = [];
+
+  fields
+    .filter((field) => field.value !== undefined)
+    .forEach((value) => {
+      xAxis.push(value.position.x);
+      yAxis.push(value.position.y);
+    });
+
+  if (allEqual(xAxis)) {
+    return xAxis[0];
+  }
+  if (allEqual(yAxis)) {
+    return xAxis[0];
+  }
+  return -1;
+};
+
+export const sum = (a: number, b: number, c: number): boolean => a + b === c;
+export const subtraction = (a: number, b: number, c: number): boolean =>
+  a - b === c;
+export const division = (a: number, b: number, c: number): boolean =>
+  a / b === c;
+export const multiplication = (a: number, b: number, c: number): boolean =>
+  a * b === c;
+export const squareExponent = (a: number, b: number): boolean =>
+  Math.pow(a, 2) === b;
+export const cubeExponent = (a: number, b: number): boolean =>
+  Math.pow(a, 3) === b;
+export const squareRoot = (a: number, b: number): boolean => Math.sqrt(a) === b;
+export const cubeRoot = (a: number, b: number): boolean =>
+  Math.pow(a, 1 / 3) === b;
+
+export const lengthOfThree = (array: SquareType[]) => {
+  const [a, b, c] = array;
+  console.log(sum(a.value, b.value, c.value));
+  console.log(subtraction(a.value, b.value, c.value));
+  console.log(multiplication(a.value, b.value, c.value));
+  console.log(division(a.value, b.value, c.value));
+};
+
+export const allSum = (array: string[]) => {
+  for (let x = 0; x < array.length / 2; x++) {
+    for (let y = 0; y < 10; y++) {}
   }
 };

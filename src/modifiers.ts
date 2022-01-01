@@ -5,7 +5,6 @@ export const wholeTriple: Position[] = [
   { x: 0, y: 7 },
   { x: 0, y: 14 },
   { x: 7, y: 0 },
-  { x: 7, y: 7 },
   { x: 7, y: 14 },
   { x: 14, y: 0 },
   { x: 14, y: 7 },

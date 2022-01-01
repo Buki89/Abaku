@@ -14,9 +14,14 @@ export type SquareType = {
   stoneStackIndex?: number;
 };
 
+export type Game = {
+  initialMove: boolean;
+};
+
 export type State = {
   field: SquareType[];
   stones: Stones;
+  game: Game;
 };
 
 export enum ActionType {
@@ -27,9 +32,12 @@ export enum ActionType {
   removeStone = "REMOVE_STONE",
 }
 
-export type AddNumber = {
+export type ActionAddNumber = {
   type: ActionType.addNumber;
-  payload: Pick<SquareType, "position" | "value" | "stoneStackIndex">;
+  payload: Pick<
+    SquareType,
+    "position" | "value" | "stoneStackIndex" | "status"
+  >;
 };
 
 export type RemoveNumber = {
@@ -52,14 +60,12 @@ export type AddStone = {
 
 export type RemoveStone = {
   type: ActionType.removeStone;
-  payload: {
-    index: number;
-  };
+  payload: {};
 };
 
 export type Action =
   | ChangeActiveStone
-  | AddNumber
+  | ActionAddNumber
   | RemoveNumber
   | AddStone
   | RemoveStone;
